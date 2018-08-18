@@ -11,11 +11,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.BlockIterator;
 
 public class Core extends JavaPlugin implements Listener{
-	
+
+	ItemStack greenCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 5);
+	ItemStack orangeCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 4);
+	ItemStack redCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 2);
+
 	@Override
 	public void onEnable(){
 		getLogger().info(ChatColor.BLUE + "SAO Has been Enabled");
@@ -23,7 +28,7 @@ public class Core extends JavaPlugin implements Listener{
 		@Override
 		public void run(){
 			for(Player player : Bukkit.getOnlinePlayers()) {
-				crystals.GreenCrystal.playerCrystal(player);
+				crystals.Crystal.playerCrystal(player, greenCrystal);
 			}
 			return;
 		}
@@ -31,7 +36,9 @@ public class Core extends JavaPlugin implements Listener{
 		registerEvents(this,
 				new crystals.GreenCrystal(this),
 				new crystals.OrangeCrystal(this),
-				new crystals.RedCrystal(this),this);
+				new crystals.RedCrystal(this),
+				new crystals.Crystal(this),
+				this);
 		saveConfig();
 	}
 	
