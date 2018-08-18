@@ -1,7 +1,9 @@
 package com.enjin.chivalrycraft;
 
+import java.util.ArrayList;
 import java.util.Set;
 
+import crystals.Crystal;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,36 +19,34 @@ import org.bukkit.util.BlockIterator;
 
 public class Core extends JavaPlugin implements Listener{
 
-	ItemStack greenCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 5);
-	ItemStack orangeCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 4);
-	ItemStack redCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 2);
+
+	//ItemStack orangeCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 4);
+	//ItemStack redCrystal = new ItemStack(Material.STAINED_GLASS,1,(byte) 2);
+
+	ArrayList<Crystal> playerCrystals = new ArrayList<Crystal>();
 
 	@Override
 	public void onEnable(){
-		getLogger().info(ChatColor.BLUE + "SAO Has been Enabled");
+		getLogger().info(ChatColor.BLUE + "SAO has been Enabled");
 		Bukkit.getScheduler().runTaskTimer(this, new Runnable() {
 		@Override
 		public void run(){
 			for(Player player : Bukkit.getOnlinePlayers()) {
-				crystals.Crystal.playerCrystal(player, greenCrystal);
+				playerCrystals.add(new Crystal(player, new ItemStack(Material.STAINED_GLASS_PANE,1,(byte) 5)));
 			}
 			return;
 		}
 	},1,1);
-		registerEvents(this,
-				new crystals.GreenCrystal(this),
-				new crystals.OrangeCrystal(this),
-				new crystals.RedCrystal(this),
-				new crystals.Crystal(this),
-				this);
+
 		saveConfig();
 	}
 	
 	@Override
 	public void onDisable(){
-		crystals.GreenCrystal.as.remove();
-		crystals.GreenCrystal.as2.remove();
-		getLogger().info("SAO Has been Disabled");
+		for(Crystal crystal : playerCrystals){
+		    crystal.removeCrystal();
+        }
+		getLogger().info("SAO has been Disabled");
 		saveConfig();
 	}
 	
@@ -56,7 +56,7 @@ public class Core extends JavaPlugin implements Listener{
 		}
 		}
 	
-	@EventHandler
+	/*@EventHandler
 	public void playerLook(PlayerMoveEvent e){
 		//Player player = e.getPlayer();
 		//Block b = player.getTargetBlock((Set<Material>) null, 200);
@@ -66,11 +66,21 @@ public class Core extends JavaPlugin implements Listener{
 			if(bLoc == player.getEyeLocation().add(.0, .4, .0)){
 				b.setType(Material.AIR);
 			}
-		}*/
+		}
 		
 		
 		
-	}
+	}*/
+
+	@EventHandler
+    public void onPlayerMove(PlayerMoveEvent event){
+	    Player player = event.getPlayer();
+        for(Crystal crystal : playerCrystals){
+            if(crystal.getPlayer() == player){
+                crystal.updatePosition(player);
+            }
+        }
+    }
 	
     public final Block getTargetBlock(Player player, int range) {
         BlockIterator iter = new BlockIterator(player, range);
