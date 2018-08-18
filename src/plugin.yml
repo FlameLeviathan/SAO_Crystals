@@ -1,0 +1,5 @@
+name: SAO
+version: 1.0
+main: com.enjin.chivalrycraft.Core
+
+commands:
