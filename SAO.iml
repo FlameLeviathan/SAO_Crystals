@@ -23,10 +23,19 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="spigot.jar">
         <CLASSES>
           <root url="jar://$USER_HOME$/Desktop/Test Minecraft Server/spigot.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/parties_19.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

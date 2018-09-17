@@ -1,5 +1,17 @@
-name: SAO
-version: 1.1
+name: SAOCursors
+version: 1.0.3.4
 main: com.enjin.chivalrycraft.Core
-
+author: FlameKnight15
 commands:
+  karma:
+    description: Checks the karma of a player
+    usage: /karma <player>
+  setkarma:
+    description: Sets the karma of a player
+    usage: /setkarma <player> <amount>
+  addkarma:
+    description: Adds karma to the total karma of a player
+    usage: /addkarma <player> <amount>
+  removekarma:
+    description: Removes karma from a player
+    usage: /removekarma <player> <amount>

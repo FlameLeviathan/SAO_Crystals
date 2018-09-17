@@ -1,66 +1,100 @@
-package crystals;
+package com.enjin.chivalrycraft;
 
-import com.enjin.chivalrycraft.Core;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArmorStand;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class Crystal implements Listener {
+public class Crystal {
 
 	static boolean hasCrystal = false;
 	Player player;
-	ItemStack crystal;
-    Shard shardPhaseOne;
-    Shard shardPhaseTwo;
 
 
-/*	Core c;
+
+	/*Core c;
 	public Crystal(Core c){
 		this.c = c;
 	}*/
+    ArmorStand crystalDisplay;
 
-    public Crystal(Player player, ItemStack crystal){
+    public Crystal(Player player){
         if(player.isOnline()){
             if(hasCrystal == false){
                 this.player = player;
-                this.crystal = crystal;
-                shardPhaseOne = new Shard(crystal, 1);
-                shardPhaseTwo = new Shard(crystal, 2);
 
-                shardPhaseOne.armorStand.teleport(player.getEyeLocation().add(0, .4, 0));
-                shardPhaseTwo.armorStand.teleport(player.getEyeLocation().add(0,.4,0));
+                crystalDisplay = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
 
+
+                crystalDisplay.setVisible(false);
+                crystalDisplay.setSmall(true);
+                crystalDisplay.setMaxHealth(1000);
+                crystalDisplay.setHealth(1000);
+                crystalDisplay.setCustomName(ChatColor.GREEN + "♦");
+                crystalDisplay.setCustomNameVisible(true);
+
+                //Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
+                //slime.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 0 , false, false));
+                //slime.setSize(0);
+
+
+                player.setPassenger(crystalDisplay);
+
+                //slime.setPassenger(crystalDisplay);
             }
         }
     }
 
-    public void updatePosition(Player player){
-        shardPhaseOne.armorStand.teleport(player.getEyeLocation().add(0, .4, 0));
-        shardPhaseTwo.armorStand.teleport(player.getEyeLocation().add(0,.4,0));
-    }
-
+    /**
+     * Removes the crystal from the player's head
+     */
     public void removeCrystal(){
-        shardPhaseOne.armorStand.remove();
-        shardPhaseTwo.armorStand.remove();
+        crystalDisplay.remove();
     }
 
-    public Player getPlayer(){
+    /**
+     * Takes a Chat color and applies that color to the crystal
+     * @param color
+     */
+    public void setCrystalColor(ChatColor color){
+        crystalDisplay.setCustomName(color + "♦");
+    }
+
+    public void setCrystalColor(String color){
+        switch (color.toUpperCase()){
+            case "GREEN":
+                crystalDisplay.setCustomName(ChatColor.GREEN + "♦");
+                break;
+            case "ORANGE":
+                crystalDisplay.setCustomName(ChatColor.GOLD + "♦");
+                break;
+            case "RED":
+                crystalDisplay.setCustomName(ChatColor.RED + "♦");
+                break;
+            default:
+                crystalDisplay.setCustomName(ChatColor.GREEN + "♦");
+                break;
+
+        }
+
+    }
+
+
+    /**
+     * Returns the player who has the crystal over their head
+     * @return
+     */
+/*    public SAOPlayer getPlayer(){
         return player;
-    }
+    }*/
 
-    public ItemStack getCrystal(){
-        return crystal;
+    /**
+     * Returns the armor stand "crystal"
+     * @return
+     */
+    public ArmorStand getCrystal(){
+        return crystalDisplay;
     }
 
 
